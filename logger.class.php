@@ -4,9 +4,6 @@ if (!defined('IN_AUTH')) {
 	exit('Access Denied');
 }
 
-define("INFO_LOG","INFO");
-define("ERR_LOG","ERROR");
-
 class T {
 
 	public static function clearAll(){
@@ -15,16 +12,20 @@ class T {
 	}
 	
 	public static function clear($type){
-		if(file_exists($type)){
-			unlink(LOG_PATH.$type);
+		if(!LOG_DISABLED){
+			if(file_exists($type)){
+				unlink(LOG_PATH.$type);
+			}
 		}
 	}
 	
 	private static function log($tid,$info,$type){
-		if($tid===null){
-			$tid="MAIN";
+		if(!LOG_DISABLED){
+			if($tid===null){
+				$tid="MAIN";
+			}
+			file_put_contents(LOG_PATH.$type, date("[YmdHis]")."\t ".$tid."\t ".$info."\n",FILE_APPEND);
 		}
-		file_put_contents(LOG_PATH.$type, date("[YmdHis]")."\t ".$tid."\t ".$info."\n",FILE_APPEND);
 	}
 	
 	public static function i($tid,$info){

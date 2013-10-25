@@ -51,9 +51,6 @@ class Thread {
 	
 }
 
-define("DEFAULT_SLICE_SIZE",32);
-define("DEFAULT_MAX_THREAD",128);
-
 class MapReduce{
 	
 	private $data;

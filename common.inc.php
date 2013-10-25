@@ -11,14 +11,16 @@ ignore_user_abort(true);
 set_time_limit(0);
 
 define('IN_AUTH', true);
-define('CACHE_COMPRESSION_RATE', 9);
-define('CACHE_COMPRESSED', true);
 
+define("DEFAULT_SLICE_SIZE",32);
+define("DEFAULT_MAX_THREAD",128);
+
+define("LOG_DISABLED",false);
 define('LOG_PATH',"log/");
-define('EXCEPTION_GCG_REDIS_FAILURE', '90050');
+define("INFO_LOG","INFO");
+define("ERR_LOG","ERROR");
 
 require_once 'logger.class.php';
-require_once 'db_redis.class.php';
 require_once 'Threading.class.php';
 
 ?>
