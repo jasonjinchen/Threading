@@ -4,7 +4,8 @@ PHP多线程服务和MapReduce能力库
 使用PHP的curl_multi方法来实现的多线程并发。
 ----------
 ### 依赖性
-PHP curl
+*	PHP curl：为了使用PHP的cURL函数，你需要安装» libcurl包。PHP需要使用libcurl 7.0.2-beta 或者更高版本。在PHP 4.2.3 里使用cURL，你需要安装7.9.0或更高版本的libcurl。从PHP 4.3.0开始你需要安装7.9.0或更高版本的libcurl。从PHP 5.0.0开始你需要安装7.10.5或更高版本的libcurl。
+*	例如Ubuntu Linux中，apt-get install php5-curl是必要的步骤。
 ### 示例
 
 ```PHP
@@ -92,7 +93,7 @@ PHP curl
 	[mixed] public static function getChildParams($name) //静态方法在子线程中获得线程池传递的数据
 ```
 		Input:
-		1. $name是和addThread中$params数组中的Key
+		1. $name是addThread中传递到子线程的$params数组中的Key
 		Ouput：
 		1. 无论$params中$name的Value是对象还是数组，均会被转化为关联数组的形式
 		例如：$threads->addThread("http://testurl/test1.php",array("test1"=>'val1',));
