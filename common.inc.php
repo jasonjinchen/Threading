@@ -22,5 +22,6 @@ define("ERR_LOG","ERROR");
 
 require_once 'logger.class.php';
 require_once 'Threading.class.php';
+require_once 'mapreduce.class.php';
 
 ?>

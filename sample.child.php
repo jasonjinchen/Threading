@@ -3,9 +3,10 @@
 include_once 'common.inc.php';
 
 $id=Thread::getChildThreadID();
-$myname=basename($_SERVER[PHP_SELF]);
+$phrase=Thread::getChildPhrase();
 
-t::i($id, $myname." ENTER THREAD");
+$myname=basename($_SERVER[PHP_SELF]);
+t::i($id, $myname."\t ".$phrase." ENTER THREAD");
 
 $data=Thread::getChildParams("data");
 
@@ -15,6 +16,6 @@ foreach($data as $i){
 }
 echo $subtotal;
 
-t::i($id, $myname." COMPLETE: ".$subtotal);
+t::i($id, $myname."\t ".$phrase." COMPLETE: ".$subtotal);
 
 ?>
