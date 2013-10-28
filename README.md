@@ -1,8 +1,9 @@
 PHP多线程服务和MapReduce
 =========
-[Author] 	Jason KIM
-[Email] 	jason.gcg@gmail.com
-[License] 	The MIT License (MIT)
+
+		[Author] 	Jason KIM
+		[Email] 	jason.gcg@gmail.com
+		[License] 	The MIT License (MIT)
 
 使用多线程并发
 ----------
