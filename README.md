@@ -42,7 +42,7 @@ PHP多线程服务和MapReduce
 	//例如http://testurl/test1.php
 	include_once 'common.inc.php';
 	
-	$val=Thread::getChildPrams('test1'); //$val赋值为val1
+	$val=Thread::getChildParams('test1'); //$val赋值为val1
 	$id=Thread::getChildThreadID(); //得到和$t1->getThreadID()一样的ID
 	
 	echo $val; //$t1_result结果为val1
