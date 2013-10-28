@@ -6,6 +6,8 @@ PHP多线程服务和MapReduce能力库
 ### 依赖性
 PHP curl
 ### 示例
+
+```PHP
 		<?
 		//sample.thread.php
 		include_once 'common.inc.php';
@@ -22,8 +24,11 @@ PHP curl
 		$t3_result=$result[$t3->getThreadID()];
 		$t4_result=$result[$t4->getThreadID()]; 
 		?>
+```
+
 		test1.php到test4.php均会同时多线程执行，结果返回$result中，分别用其线程ID区分。
-		
+
+```PHP		
 		<?
 		//例如http://www.testurl.com/test1.php
 		include_once 'common.inc.php';
@@ -32,32 +37,27 @@ PHP curl
 		$id=Thread::getChildThreadID(); //得到和$t1->getThreadID()一样的ID
 		
 		echo $val; //$t1_result结果为val1
-		
 		?>
+```
 
 ### ThreadPool API
-		```
+
 		[ThreadPool] public function __construct()
 		初始化线程池对象
-		```
-		```
+
 		[Thread] public function addThread($methodURL, $params = array())
 		向线程池中添加线程
-		```
 		Input：
 		1. $methodURL: 并发的线程的URL
 		2. $params：数组，需要传递给线程的数据，以Key->Value传递，Value可以是任何类型，但传到子线程均会变成数组
 		Output：
 		1. 返回Thread类型的线程对象
 		
-		```
 		[Void] public function clearThreads()
 		将线程池中的线程清空
-		```
-		```
+
 		[Array] public function execThreads()
 		并发执行线程池中的所有线程
-		```
 		Output：
 		1. 用一个数组返回每个线程执行结果
 		2. 每个线程的执行结果的索引为线程ID
