@@ -83,6 +83,11 @@ class ThreadPool {
 		return $currThread;
 	}
 	
+	public function clearThreads(){
+		$this->thread_count=0;
+		$this->pool=array();
+	}
+	
 	public function execThreads() {
 				
 		$mh = curl_multi_init ();
