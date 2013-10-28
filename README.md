@@ -224,7 +224,47 @@ PHP多线程服务和MapReduce能力库
 Array ( [total_phrase] => 3 [result_phrase] => INIT_SUM [time_spend] => 98.917007446289 [result] => Array ( [0] => 5050 ) ) 
 Array ( [total_phrase] => 3 [result_phrase] => SUM_SUM [time_spend] => 371.77205085754 [result] => Array ( [0] => 12753775 ) )
 ```
-		
-		
-		
+
+[Optional]文本线程记录辅助器
+---------
+
+### 依赖性
+
+*	logger.class.php 
+*	LOG_PATH可以读写，如chmod 777 LOG_PATH
+*	LOG_PATH在common.inc.php中定义
+
+### 可选择不使用
+
+*	屏蔽common.inc.php中以下段落完全去除Logger：
+
+```PHP
+	define("LOG_DISABLED",false);
+	define('LOG_PATH',"log/");
+	define("INFO_LOG","INFO");
+	define("ERR_LOG","ERROR");
+	require_once 'logger.class.php';
+```		
+*	禁止Log的读写，但不去除：
+
+```PHP
+	define("LOG_DISABLED",true);
+```	
+### 示例
+
+```PHP
+
+	t::clearAll();							//清除所有日志文件
+	t::i(null, "Control Thread START");		//tid=null则认为是主线程，记录为Thread Main，写入INFO_LOG
+	t::i ( $id, "ENTER THREAD" );			//tid=$id将记录线程ID，写入INFO_LOG
+	try{
+		...
+	}catch(Exception $e){
+		t::e(null, $e->getMessage());		//e，写入ERR_LOG
+		t::e($id, $e->getMessage());		//e，写入ERR_LOG
+	}
+	t::clear(INFO_LOG);						//清除INFO_LOG日志
+	t::clear(ERR_LOG);						//清除ERR_LOG日志
+	
+```		
 		
