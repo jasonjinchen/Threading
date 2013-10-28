@@ -1,11 +1,15 @@
 PHP多线程服务和MapReduce能力库
 =========
 
-使用PHP的curl_multi方法来实现的多线程并发。
+使用多线程并发
 ----------
+
 ### 依赖性
+
 *	PHP curl：为了使用PHP的cURL函数，你需要安装» libcurl包。PHP需要使用libcurl 7.0.2-beta 或者更高版本。在PHP 4.2.3 里使用cURL，你需要安装7.9.0或更高版本的libcurl。从PHP 4.3.0开始你需要安装7.9.0或更高版本的libcurl。从PHP 5.0.0开始你需要安装7.10.5或更高版本的libcurl。
 *	例如Ubuntu Linux中，apt-get install php5-curl是必要的步骤。
+*	common.inc.php
+
 ### 示例
 
 ```PHP
@@ -96,9 +100,110 @@ PHP多线程服务和MapReduce能力库
 		1. $name是addThread中传递到子线程的$params数组中的Key
 		Ouput：
 		1. 无论$params中$name的Value是对象还是数组，均会被转化为关联数组的形式
+		2. 如果该键值在传入Pool中不存在，返回null
 		例如：$threads->addThread("http://testurl/test1.php",array("test1"=>'val1',));
-			在http://testurl/test1.php中调用Thread::getChildPrams('test1')将得到val1
+			在http://testurl/test1.php中调用Thread::getChildParams('test1')将得到val1, Thread::getChildParams('test2')将得到null
 		
+使用MapReduce方法
+---------------
+
+### 依赖性
+
+*	threading.class.php 和 mapreduce.class.php 
+*	common.inc.php
+
+### 示例
+
+```PHP
+<?
+	
+	//Sample.php，MapReduce的主线程
+	
+	include_once 'common.inc.php';
+		
+	$count=100; 
+	$data=range(0, $count);			//示例数据从0-100的数组
+
+	//初始化MapReduce对象	
+	$test=new MapReduce();
+	$test->setSize(10); 			//设置每个Reducer线程Map到的数据数量
+	$test->setMaxThread(100); 		//设置最多产生多少并行的Reducer线程
+	$test->passPhraseToChild(true); //将MapReduce的阶段传入Reducer
+	
+	//第一次MapReduce	
+	$test->setData($data);				//设置首次MapReduce的数据
+	$test->setMapperName("data");		//设置此数据被Reducer获取时的键值名称
+	$test->setPhraseName("INIT_SUM");	//设置此次MapReduce的名称
+	
+	$test->clearReducer();				//清除所有阶段Reducer
+	$test->clearDefaultReducer();		//清除所有默认的Reducer
+	//设置默认的Reducer的脚本的URL，可以设置多个，执行时自动均衡调用
+	$test->addDefaultReducer("http://testurl/sample.child.php");
+	//设置制定阶段的的Reducer的脚本的URL，可以设置多个，执行时自动均衡调用，此处设定了第一个阶段的确切Reducer
+	$test->addReducer(1,"http://testurl/sample.child.php");
+	$result=$test->execute(1);		//执行MapReduce直到输入数据集被Reduce到一个结果为止
+
+	print_r($result);	
+	
+	//第二次MapReduce
+	$test->setData(range(0,$result['result'][0])); 	//使用0到上次的结果作为本次数据集
+	$test->setMapperName("data");					//设置此数据被Reducer获取时的键值名称
+	$test->setPhraseName("SUM_SUM");				//设置此次MapReduce的名称
+	$test->clearReducer();							//清除所有阶段Reducer
+	$test->clearDefaultReducer();					//清除所有默认的Reducer
+	//设置默认的Reducer的脚本的URL，可以设置多个，执行时自动均衡调用
+	$test->addDefaultReducer("http://testurl/sample.child.php");
+	//设置制定阶段的的Reducer的脚本的URL，可以设置多个，执行时自动均衡调用，此处设定了第2个阶段的确切Reducer
+	$test->addReducer(2,"http://testurl/sample.child.php");
+	$result=$test->execute(5);		//执行MapReduce直到输入数据集被Reduce到不超过5个结果为止
+	
+	print_r($result);
+?>
+```
+	
+	Reducer的定义方法示例：
+	
+```PHP
+<?php
+	//Reducer线程
+	
+	include_once 'common.inc.php';
+	
+	$id = Thread::getChildThreadID ();		//获得当前线程ID
+	$phrase = Thread::getChildPhrase ();	//获得目前MapReduce的阶段
+	$name = Thread::getPhraseName ();		//获得目前MapReduce的名称
+	
+	switch ($name) {
+		case "INIT_SUM" :
+			$data = Thread::getChildParams ( "data" ); //获取从Mapper传递的数据
+			$subtotal = 0;
+			foreach ( $data as $i ) {
+				$subtotal += $i;
+			}
+			
+			if($phrase==1){
+				t::i ( $id, "Specified reducer at phrase ".$phrase );
+			}
+			
+			echo $subtotal;
+			break;
+		case "SUM_SUM" :
+			$data = Thread::getChildParams ( "data" ); //获取从Mapper传递的数据
+			$subtotal = 0;
+			foreach ( $data as $i ) {
+				$subtotal += $i;
+			}
+			
+			if($phrase==2){
+				t::i ( $id, "Specified reducer at phrase ".$phrase );
+			}
+			
+			echo $subtotal;
+			break;
+	}
+	
+?>
+```
 		
 		
 		
