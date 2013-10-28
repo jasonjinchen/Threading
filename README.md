@@ -1,4 +1,5 @@
-Threading
+PHP多线程服务和MapReduce
 =========
 
-Enable PHP Threading
+原理
+
