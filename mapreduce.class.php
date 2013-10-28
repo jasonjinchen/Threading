@@ -114,12 +114,20 @@ class MapReduce{
 	}
 
 	public function execute($endElementCount){
+		$start_time=microtime(true);
 		$this->currPhrase=0;
 		$result=$this->data;
 		while(count($result)>$endElementCount){
 			$result=$this->singleMapReduce($result);
 		}
-		return $result;
+		$end_time=microtime(true);
+		
+		$output=array();
+		$output['total_phrase']=$this->currPhrase;
+		$output['result_phrase']=$this->phraseName;
+		$output['time_spend']=($end_time-$start_time)*1000.0;
+		$output['result']=array_values($result);
+		return $output;
 	}
 
 }

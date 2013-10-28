@@ -25,7 +25,7 @@ class Thread {
 		$this->functionParams['TID']=$this->threadID;
 	}
 		
-	public function getInvodeHandler() {
+	public function getInvokeHandler() {
 		$s = curl_init ();
 		curl_setopt ( $s, CURLOPT_URL, $this->methodURL );
 		curl_setopt ( $s, CURLOPT_POST, TRUE );
@@ -88,7 +88,7 @@ class ThreadPool {
 		$mh = curl_multi_init ();
 		$thread_array = array ();
 		foreach ( $this->pool as $thread ) {
-			$curr_curl = $thread->getInvodeHandler ();
+			$curr_curl = $thread->getInvokeHandler();
 			curl_multi_add_handle ( $mh, $curr_curl );
 			$thread_array [$thread->getThreadID ()] = $curr_curl;
 		}
