@@ -4,7 +4,7 @@ if (!defined('IN_AUTH')) {
 	exit('Access Denied');
 }
 
-class T {
+class t {
 
 	public static function clearAll(){
 		self::clear(INFO_LOG);

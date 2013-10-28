@@ -80,7 +80,6 @@ class MapReduce{
 	private function singleMapReduce($currData){
 		$this->currPhrase+=1;
 
-		t::i(null,"Phrase".$this->currPhrase."---------------------");
 		$curr_slide=$this->slideSize;
 		if(count($currData)/$this->slideSize>$this->maxThread){
 			$curr_slide=ceil(count($currData)/$this->maxThread);
