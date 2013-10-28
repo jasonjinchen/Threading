@@ -56,6 +56,13 @@ class Thread {
 		return null;
 	}
 	
+	public static function getPhraseName(){
+		if(isset($_POST['PHRASE_NAME'])){
+			return $_POST['PHRASE_NAME'];
+		}
+		return null;
+	}
+	
 }
 
 
@@ -66,9 +73,7 @@ class ThreadPool {
 	
 	public function __construct() {
 		$this->thread_count = 0;
-		$this->pool = array ();
-		
-		$config = parse_ini_file ( 'config.ini.php', true );
+		$this->pool = array ();		
 	}
 		
 	public function addThread($methodURL, $params = array()) {
@@ -90,7 +95,6 @@ class ThreadPool {
 		
 		$running = NULL;
 		do {
-			usleep ( 10000 );
 			curl_multi_exec ( $mh, $running );
 		} while ( $running > 0 );
 		

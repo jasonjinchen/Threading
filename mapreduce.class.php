@@ -13,6 +13,7 @@ class MapReduce{
 	private $defaultReducerList;
 	private $childPassPhrase;
 	private $mapperName;
+	private $phraseName;
 
 	private $reducerVisit;
 	private $threadPool;
@@ -23,6 +24,7 @@ class MapReduce{
 		$this->maxThread=DEFAULT_MAX_THREAD;
 		$this->currPhrase=0;
 		$this->childPassPhrase=false;
+		$this->phraseName=DEFAULT_PHRASE_NAME;
 
 		$this->reducerList=array();
 		$this->defaultReducerList=array();
@@ -33,6 +35,10 @@ class MapReduce{
 	
 	public function passPhraseToChild($enable=false){
 		$this->childPassPhrase=$enable;
+	}
+	
+	public function setPhraseName($name){
+		$this->phraseName=$name;
 	}
 
 	public function setMaxThread($max){
@@ -83,7 +89,7 @@ class MapReduce{
 		$curr_chunks=array_chunk($currData,$curr_slide);
 		for($i=0;$i<count($curr_chunks);$i++){
 			$currReducer=$this->getRandomReducer();
-			$thread_info=array($this->mapperName=>$curr_chunks[$i]);
+			$thread_info=array($this->mapperName=>$curr_chunks[$i],"PHRASE_NAME"=>$this->phraseName);
 			if($this->childPassPhrase){
 				$thread_info['phrase']=$this->currPhrase;
 			}

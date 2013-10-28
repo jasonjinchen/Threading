@@ -14,6 +14,7 @@ define('IN_AUTH', true);
 
 define("DEFAULT_SLICE_SIZE",32);
 define("DEFAULT_MAX_THREAD",128);
+define("DEFAULT_PHRASE_NAME","COMMON_PHRASE");
 
 define("LOG_DISABLED",false);
 define('LOG_PATH',"log/");
@@ -21,7 +22,7 @@ define("INFO_LOG","INFO");
 define("ERR_LOG","ERROR");
 
 require_once 'logger.class.php';
-require_once 'Threading.class.php';
+require_once 'threading.class.php';
 require_once 'mapreduce.class.php';
 
 ?>
