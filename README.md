@@ -1,5 +1,8 @@
-PHP多线程服务和MapReduce能力库
+PHP多线程服务和MapReduce
 =========
+[Author] 	Jason KIM
+[Email] 	jason.gcg@gmail.com
+[License] 	The MIT License (MIT)
 
 使用多线程并发
 ----------
@@ -225,7 +228,7 @@ Array ( [total_phrase] => 3 [result_phrase] => INIT_SUM [time_spend] => 98.91700
 Array ( [total_phrase] => 3 [result_phrase] => SUM_SUM [time_spend] => 371.77205085754 [result] => Array ( [0] => 12753775 ) )
 ```
 
-[Optional]文本线程记录辅助器
+[可选]文本线程记录辅助器
 ---------
 
 ### 依赖性
