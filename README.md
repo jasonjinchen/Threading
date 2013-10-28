@@ -128,7 +128,19 @@ PHP多线程服务和MapReduce能力库
 	$test=new MapReduce();
 	$test->setSize(10); 			//设置每个Reducer线程Map到的数据数量
 	$test->setMaxThread(100); 		//设置最多产生多少并行的Reducer线程
+	/*
+	一般Apache对并发的的线程数量有所限制，默认值在common.inc.php中定义为128个：
+		define("DEFAULT_MAX_THREAD",128);
+	不同的Reducer对服务器的负载不同，默认的Reducer分担的数据量定义为32个：
+		define("DEFAULT_SLICE_SIZE",32);
+	注意：
+		- $data为被Mapper传递给各个Reducer的总数量
+		- 当总数量/Size>MaxThread时，将自动调整Size为Floor(总数量/MaxThread)
+		- 当总数量/Size<MaxThread时，实际发起的Thread数量为Ceil(总数量/Size)
+	*/
+	
 	$test->passPhraseToChild(true); //将MapReduce的阶段传入Reducer
+									//这将有助于将不同阶段的算法合并在一个Reducer脚本中编写
 	
 	//第一次MapReduce	
 	$test->setData($data);				//设置首次MapReduce的数据
@@ -174,26 +186,28 @@ PHP多线程服务和MapReduce能力库
 	$name = Thread::getPhraseName ();		//获得目前MapReduce的名称
 	
 	switch ($name) {
-		case "INIT_SUM" :
+		case "INIT_SUM" : //根据不同的阶段名称使用不同算法
 			$data = Thread::getChildParams ( "data" ); //获取从Mapper传递的数据
 			$subtotal = 0;
 			foreach ( $data as $i ) {
 				$subtotal += $i;
 			}
 			
-			if($phrase==1){
+			//亦可根据不同阶段采用不同的算法
+			if($phrase==1){  
 				t::i ( $id, "Specified reducer at phrase ".$phrase );
 			}
 			
 			echo $subtotal;
 			break;
-		case "SUM_SUM" :
+		case "SUM_SUM" : //根据不同的阶段名称使用不同算法
 			$data = Thread::getChildParams ( "data" ); //获取从Mapper传递的数据
 			$subtotal = 0;
 			foreach ( $data as $i ) {
 				$subtotal += $i;
 			}
 			
+			//亦可根据不同阶段采用不同的算法
 			if($phrase==2){
 				t::i ( $id, "Specified reducer at phrase ".$phrase );
 			}
