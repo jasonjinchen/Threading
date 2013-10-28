@@ -8,36 +8,36 @@ PHP curl
 ### 示例
 
 ```PHP
-		<?
-		//sample.thread.php
-		include_once 'common.inc.php';
-		
-		$threads=new ThreadPool();
-		$t1=$threads->addThread("http://www.testurl.com/test1.php",array("test1"=>'val1',));
-		$t2=$threads->addThread("http://www.testurl.com/test2.php",array("test2"=>'val2',));
-		$t3=$threads->addThread("http://www.testurl.com/test3.php",array("test3"=>'val3',));
-		$t4=$threads->addThread("http://www.testurl.com/test4.php",array("test4"=>'val4',));
-		$result=$threads->execThreads();
-		
-		$t1_result=$result[$t1->getThreadID()];
-		$t2_result=$result[$t2->getThreadID()];
-		$t3_result=$result[$t3->getThreadID()];
-		$t4_result=$result[$t4->getThreadID()]; 
-		?>
+	<?
+	//sample.thread.php
+	include_once 'common.inc.php';
+	
+	$threads=new ThreadPool();
+	$t1=$threads->addThread("http://testurl/test1.php",array("test1"=>'val1',));
+	$t2=$threads->addThread("http://testurl/test2.php",array("test2"=>'val2',));
+	$t3=$threads->addThread("http://testurl/test3.php",array("test3"=>'val3',));
+	$t4=$threads->addThread("http://testurl/test4.php",array("test4"=>'val4',));
+	$result=$threads->execThreads();
+	
+	$t1_result=$result[$t1->getThreadID()];
+	$t2_result=$result[$t2->getThreadID()];
+	$t3_result=$result[$t3->getThreadID()];
+	$t4_result=$result[$t4->getThreadID()]; 
+	?>
 ```
 
 		test1.php到test4.php均会同时多线程执行，结果返回$result中，分别用其线程ID区分。
 
 ```PHP		
-		<?
-		//例如http://www.testurl.com/test1.php
-		include_once 'common.inc.php';
-		
-		$val=Thread::getChildPrams('test1'); //$val赋值为val1
-		$id=Thread::getChildThreadID(); //得到和$t1->getThreadID()一样的ID
-		
-		echo $val; //$t1_result结果为val1
-		?>
+	<?
+	//例如http://testurl/test1.php
+	include_once 'common.inc.php';
+	
+	$val=Thread::getChildPrams('test1'); //$val赋值为val1
+	$id=Thread::getChildThreadID(); //得到和$t1->getThreadID()一样的ID
+	
+	echo $val; //$t1_result结果为val1
+	?>
 ```
 
 ### ThreadPool API
@@ -78,9 +78,9 @@ PHP curl
 		Output:
 		1. 字符串表示的线程编号，独一无二的编号
 		2. 用于子线程的方法中，Thread::getChildThreadID()
-		3. 例如"http://www.testurl.com/test1.php"中使用此方法，得到当前脚本的线程ID
-		4. 如果$t1=$threads->addThread("http://www.testurl.com/test1.php",array("test1"=>'val1',));
-		   那么，在http://www.testurl.com/test1.php中使用Thread::getChildThreadID()将得到$t1->getThreadID()一样的ID
+		3. 例如"http://testurl/test1.php"中使用此方法，得到当前脚本的线程ID
+		4. 如果$t1=$threads->addThread("http://testurl/test1.php",array("test1"=>'val1',));
+		   那么，在http://testurl/test1.php中使用Thread::getChildThreadID()将得到$t1->getThreadID()一样的ID
 		   
 		[mixed] public static function getChildParams($name)
 		静态方法在子线程中获得线程池传递的数据
@@ -88,8 +88,8 @@ PHP curl
 		1. $name是和addThread中$params数组中的Key
 		Ouput：
 		1. 无论$params中$name的Value是对象还是数组，均会被转化为关联数组的形式
-		例如：$threads->addThread("http://www.testurl.com/test1.php",array("test1"=>'val1',));
-			在http://www.testurl.com/test1.php中调用Thread::getChildPrams('test1')将得到val1
+		例如：$threads->addThread("http://testurl/test1.php",array("test1"=>'val1',));
+			在http://testurl/test1.php中调用Thread::getChildPrams('test1')将得到val1
 		
 		
 		
