@@ -218,6 +218,12 @@ PHP多线程服务和MapReduce能力库
 	
 ?>
 ```
+
+例子运行的结果：
+```PHP
+Array ( [total_phrase] => 3 [result_phrase] => INIT_SUM [time_spend] => 98.917007446289 [result] => Array ( [0] => 5050 ) ) 
+Array ( [total_phrase] => 3 [result_phrase] => SUM_SUM [time_spend] => 371.77205085754 [result] => Array ( [0] => 12753775 ) )
+```
 		
 		
 		
